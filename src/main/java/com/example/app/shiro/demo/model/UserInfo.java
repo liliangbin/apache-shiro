@@ -13,6 +13,7 @@ public class UserInfo implements Serializable{
     private  int id;
 
     private long uid;//用户的id
+
     @Column(unique = true)
     private String username;//账号
 
@@ -22,7 +23,7 @@ public class UserInfo implements Serializable{
     private String salt;//加密密码的盐；
     private  byte state ;//用户状态的，0创建未认证，（比如，没有激活，没有输入验证码等等）--等待用户的验证  1，正常的状态，2，用户被锁定
 
-    @ManyToMany(fetch = FetchType.EAGER.EAGER)//立即重数据库中加载数据。
+    @ManyToMany(fetch = FetchType.EAGER)//立即重数据库中加载数据。
     @JoinTable(name ="SysUserRole",joinColumns = {@JoinColumn(name = "uid")},inverseJoinColumns = {@JoinColumn(name = "roled")})
     private List<SysRole> roleList;//一个用户具有多个角色
 

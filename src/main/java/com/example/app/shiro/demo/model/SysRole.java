@@ -21,12 +21,12 @@ public class SysRole {
     private Boolean available = Boolean.FALSE;//是否可用，如果不能用就不会添加给用户。
     //角色----权限关系 。多对多的关系。
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "SysRolePermission", joinColumns = {@JoinColumn(name = "roled")}, inverseJoinColumns = {@JoinColumn(name = "permissionId")})
+    @JoinTable(name = "SysRolePermission", joinColumns = {@JoinColumn(name = "roleId")}, inverseJoinColumns = {@JoinColumn(name = "permissionId")})
     private List<SysPermission> permissions;
 
     //用户--角色关系定义
     @ManyToMany
-    @JoinTable(name = "SysUserRole",joinColumns = {@JoinColumn(name = "roled")},inverseJoinColumns = {@JoinColumn(name = "uid")})
+    @JoinTable(name = "SysUserRole",joinColumns = {@JoinColumn(name = "roleId")},inverseJoinColumns = {@JoinColumn(name = "uid")})
     private List<UserInfo> userInfos;
 
     public long getId() {
