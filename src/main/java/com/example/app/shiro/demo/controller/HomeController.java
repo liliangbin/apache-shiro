@@ -3,6 +3,7 @@ package com.example.app.shiro.demo.controller;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -16,7 +17,15 @@ public class HomeController {
         return "/index";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value="/login",method=RequestMethod.GET)
+
+    public String login(){
+
+        return  "login";
+
+    }
+
+   @RequestMapping(value = "/login",method = RequestMethod.POST)
     public String login(HttpServletRequest request, Map<String, Object> map) throws Exception {
 
         System.out.println("HomeController.login()");

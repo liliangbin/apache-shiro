@@ -1,5 +1,7 @@
 package com.example.app.shiro.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -98,10 +100,12 @@ public class SysPermission implements Serializable {
     public void setAvailable(Boolean available) {
         this.available = available;
     }
+    @JsonBackReference
 
     public List<SysRole> getRoles() {
         return roles;
     }
+    @JsonBackReference
 
     public void setRoles(List<SysRole> roles) {
         this.roles = roles;

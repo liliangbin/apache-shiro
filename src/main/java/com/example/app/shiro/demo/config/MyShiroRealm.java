@@ -38,19 +38,14 @@ public class MyShiroRealm extends AuthorizingRealm {
         System.out.println("权限配置-->MyShiroRealm.doGetAuthorizationInfo()");
 
 
-
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
 
-        UserInfo userInfo  = (UserInfo)principals.getPrimaryPrincipal();
-
+        UserInfo userInfo = (UserInfo) principals.getPrimaryPrincipal();
 
 
         //实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
 
-//     UserInfo userInfo = userInfoService.findByUsername(username)
-
-
-
+//    UserInfo userInfo = userInfoService.findByUsername(username)
 
 
         //权限单个添加;
@@ -64,11 +59,6 @@ public class MyShiroRealm extends AuthorizingRealm {
         //添加权限
 
 //     authorizationInfo.addStringPermission("userInfo:query");
-
-
-
-
-
 
 
         ///在认证成功之后返回.
@@ -86,19 +76,18 @@ public class MyShiroRealm extends AuthorizingRealm {
 //            info.addStringPermissions(role.getPermissionsName());
 
 //        }
-
-        for(SysRole role:userInfo.getRoleList()){
+        System.out.println("用户的名字是====>"+userInfo.getUsername() + " 用户拥有的是那些角色" + userInfo.getRoleList());
+        for (SysRole role : userInfo.getRoleList()) {
 
             authorizationInfo.addRole(role.getRole());
 
-            for(SysPermission p:role.getPermissions()){
+            for (SysPermission p : role.getPermissions()) {
 
                 authorizationInfo.addStringPermission(p.getPermission());
-
+                System.out.println("这个是该用户的权限=====>" + p.getPermission() + "用户的名字是 ====>" + p.getName());
             }
 
         }
-
 
 
         //设置权限信息.
@@ -106,23 +95,16 @@ public class MyShiroRealm extends AuthorizingRealm {
 //     authorizationInfo.setStringPermissions(getStringPermissions(userInfo.getRoleList()));
 
 
-
         return authorizationInfo;
 
     }
 
 
-
-
-
     /**
-
      * 将权限对象中的权限code取出.
-
+     *
      * @param permissions
-
      * @return
-
      */
 
 //  public Set<String> getStringPermissions(Set<SysPermission> permissions){
@@ -142,8 +124,6 @@ public class MyShiroRealm extends AuthorizingRealm {
 //       return stringPermissions;
 
 //  }
-
-
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken Token) throws AuthenticationException {
         System.out.println("MyShiroRealm.doGetAuthenticationInfo()");
