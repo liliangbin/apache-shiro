@@ -4,6 +4,7 @@ import com.example.app.shiro.demo.model.SysPermission;
 import com.example.app.shiro.demo.model.SysRole;
 import com.example.app.shiro.demo.model.UserInfo;
 import com.example.app.shiro.demo.repository.UserInfoRepository;
+import com.example.app.shiro.demo.service.UserInfoService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -20,6 +21,8 @@ public class MyShiroRealm extends AuthorizingRealm {
     @Autowired
     private UserInfoRepository userInfoRepository;
 
+    @Autowired
+    private UserInfoService userInfoService;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -42,10 +45,9 @@ public class MyShiroRealm extends AuthorizingRealm {
 
         UserInfo userInfo = (UserInfo) principals.getPrimaryPrincipal();
 
-
         //实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
 
-//    UserInfo userInfo = userInfoService.findByUsername(username)
+        //    UserInfo userInfo = userInfoService.findByUsername(username)
 
 
         //权限单个添加;
@@ -76,20 +78,37 @@ public class MyShiroRealm extends AuthorizingRealm {
 //            info.addStringPermissions(role.getPermissionsName());
 
 //        }
-        System.out.println("用户的名字是====>"+userInfo.getUsername() + " 用户拥有的是那些角色" + userInfo.getRoleList());
+        System.out.println("用户的名字是====>" + userInfo.getUsername() + " 用户拥有的是那些角色" + userInfo.getRoleList());
+/*
+
+        if (userInfo.getRoleList() != null && userInfo.getRoleList().size() != 0) {
+            for (SysRole role : userInfo.getRoleList()) {
+                System.out.println(" rolelist的处理");
+
+                role.setUserInfos(null);
+                Iterable<SysPermission> sysPermissions = role.getPermissions();
+                for (SysPermission sysPermission : role.getPermissions()) {
+                    sysPermission.setRoles(null);
+
+                }
+
+            }
+        }
+*/
+
         for (SysRole role : userInfo.getRoleList()) {
 
             authorizationInfo.addRole(role.getRole());
-
             for (SysPermission p : role.getPermissions()) {
 
                 authorizationInfo.addStringPermission(p.getPermission());
                 System.out.println("这个是该用户的权限=====>" + p.getPermission() + "用户的名字是 ====>" + p.getName());
+
             }
 
         }
 
-
+       // authorizationInfo.addStringPermission("userInfo:add");
         //设置权限信息.
 
 //     authorizationInfo.setStringPermissions(getStringPermissions(userInfo.getRoleList()));
@@ -103,7 +122,7 @@ public class MyShiroRealm extends AuthorizingRealm {
     /**
      * 将权限对象中的权限code取出.
      *
-     * @param permissions
+     * @param
      * @return
      */
 
@@ -127,22 +146,39 @@ public class MyShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken Token) throws AuthenticationException {
         System.out.println("MyShiroRealm.doGetAuthenticationInfo()");
-//获取用户输入的账号
+        //获取用户输入的账号
         String username = (String) Token.getPrincipal();
+
+        System.out.println("获取用户的名字" + username);
+
         System.out.println(Token.getCredentials());
 
         //通过username从数据库中查找 User对象，如果找到，没找到.
-
+        System.out.println("----->>userInfo=" + "kaishi");
         //实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
-        UserInfo userInfo = userInfoRepository.findByUsername(username);
 
-        System.out.println("----->>userInfo=" + userInfo);
+        UserInfo userInfo = userInfoService.findByUsername(username);
+
+        System.out.println("----->>userInfo=  name" + userInfo);
 
         if (userInfo == null) {
             return null;
-
-
         }
+
+        /*
+        if (userInfo.getRoleList() != null && userInfo.getRoleList().size() != 0) {
+            for (SysRole role : userInfo.getRoleList()) {
+                System.out.println(" 前端验证密码需要" +
+                        "等于把递归信息给干掉");
+
+                role.setUserInfos(null);
+                Iterable<SysPermission> sysPermissions = role.getPermissions();
+                for (SysPermission sysPermission : role.getPermissions()) {
+                    sysPermission.setRoles(null);
+                }
+
+            }
+        }*/
 
 
        /*
@@ -156,8 +192,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         */
 
         //userInfo.setPermissions(userService.findPermissions(user));
-
-//账号判断;
+        //账号判断;
 
 
         //加密方式;

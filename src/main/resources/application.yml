@@ -8,6 +8,7 @@ spring:
   thymeleaf:
     mode: LEGACYHTML5
   jpa:
+    open-in-view: true
     show-sql: true
     hibernate:
       ddl-auto: update
@@ -15,5 +16,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
+
+
 server:
   port: 8081
+

@@ -29,7 +29,7 @@ public class SysPermission implements Serializable {
 
     @ManyToMany
 
-    @JoinTable(name="SysRolePermission",joinColumns={@JoinColumn(name="permissionId")},inverseJoinColumns={@JoinColumn(name="roleId")})
+    @JoinTable(name = "SysRolePermission", joinColumns = {@JoinColumn(name = "permissionId")}, inverseJoinColumns = {@JoinColumn(name = "roleId")})
 
     private List<SysRole> roles;
 
@@ -100,12 +100,12 @@ public class SysPermission implements Serializable {
     public void setAvailable(Boolean available) {
         this.available = available;
     }
-    @JsonBackReference
 
+  //  @JsonBackReference
     public List<SysRole> getRoles() {
         return roles;
     }
-    @JsonBackReference
+
 
     public void setRoles(List<SysRole> roles) {
         this.roles = roles;

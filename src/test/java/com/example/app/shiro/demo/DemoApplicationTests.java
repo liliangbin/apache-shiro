@@ -22,15 +22,28 @@ public class DemoApplicationTests {
     public void contextLoads() {
     }
 
+
+    /*
+    * 新建一个用户*/
     @Test
     public void user() {
 
         UserInfo userInfo = new UserInfo();
-        userInfo.setName("li");
-        userInfo.setPassword("123456");
-        userInfo.setUsername("li");
+        userInfo.setName("A");
+
+        userInfo.setUsername("A");
+        userInfoRepository.save(userInfo);
+        userInfo.setSalt("liu");
+        String hashAlgorithmName = "MD5";
+        String credentials ="123456";
+        int hashIterations = 2;
+        ByteSource credentialsSalt = ByteSource.Util.bytes(userInfo.getCredentialsSalt());
+        Object obj = new SimpleHash(hashAlgorithmName, credentials, credentialsSalt, hashIterations);
+        System.out.println(obj);
+        userInfo.setPassword(obj.toString());
         userInfoRepository.save(userInfo);
 
+     //   String password =  new SimpleHash("md5","123456",ByteSource.Util.bytes("adminnull"),2).toHex();
 
     }
 
@@ -50,8 +63,10 @@ public class DemoApplicationTests {
         String hashAlgorithmName = "MD5";
         String credentials ="123456";
         int hashIterations = 2;
-        ByteSource credentialsSalt = ByteSource.Util.bytes("li22");
-        Object obj = new SimpleHash(hashAlgorithmName, credentials, credentialsSalt, hashIterations);
+        ByteSource credentialsSalt = ByteSource.Util.bytes("admin1");
+        SimpleHash obj = new SimpleHash(hashAlgorithmName, credentials, credentialsSalt, hashIterations);
         System.out.println(obj);
+
+
     }
 }

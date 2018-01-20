@@ -7,12 +7,12 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class UserInfo implements Serializable{
+public class UserInfo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private  int id;
+    private int id;
 
     private long uid;//用户的id
 
@@ -23,10 +23,10 @@ public class UserInfo implements Serializable{
 
     private String password;//密码
     private String salt;//加密密码的盐；
-    private  byte state ;//用户状态的，0创建未认证，（比如，没有激活，没有输入验证码等等）--等待用户的验证  1，正常的状态，2，用户被锁定
+    private byte state;//用户状态的，0创建未认证，（比如，没有激活，没有输入验证码等等）--等待用户的验证  1，正常的状态，2，用户被锁定
 
     @ManyToMany(fetch = FetchType.EAGER)//立即重数据库中加载数据。
-    @JoinTable(name ="SysUserRole",joinColumns = {@JoinColumn(name = "uid")},inverseJoinColumns = {@JoinColumn(name = "roleId")})
+    @JoinTable(name = "SysUserRole", joinColumns = {@JoinColumn(name = "uid")}, inverseJoinColumns = {@JoinColumn(name = "roleId")})
     private List<SysRole> roleList;//一个用户具有多个角色
 
     public int getId() {
@@ -84,29 +84,27 @@ public class UserInfo implements Serializable{
     public void setState(byte state) {
         this.state = state;
     }
-@JsonBackReference
+
+
     public List<SysRole> getRoleList() {
         return roleList;
     }
-    @JsonBackReference
-
     public void setRoleList(List<SysRole> roleList) {
         this.roleList = roleList;
     }
 
     /**
-
      * 密码盐.
-
+     *
      * @return
-
      */
 
-    public String getCredentialsSalt(){
+    public String getCredentialsSalt() {
 
-        return this.username+this.salt;
+        return this.username + this.salt;
 
     }
+
 
     @Override
     public String toString() {
